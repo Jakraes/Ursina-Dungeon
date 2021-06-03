@@ -35,4 +35,6 @@ _ is floor
 . is empty space
 ```
 
+Press Shift to run to speed up your exploration.
+
 Feel free to contribute if you find the project interesting
