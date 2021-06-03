@@ -6,6 +6,7 @@ app = Ursina()
 world = generate_world()
 player = FirstPersonController()
 Sky(color=color.hex("#130310"))
+print(show_world(world))
 
 for y in range(len(world)):
     for x in range(len(world)):

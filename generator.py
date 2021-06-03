@@ -114,5 +114,3 @@ def generate_world():
     add_corridors(world)
     filter_world(world)
     return world
-
-print(show_world(generate_world()))
