@@ -4,7 +4,7 @@ import copy
 
 room_center_coords = []
 
-def create_blank_world(size_x=20, size_y=20, character="#"):
+def create_blank_world(size_x=25, size_y=25, character="#"):
     world = []
     for line in range(size_y):
         world.append([])
@@ -15,7 +15,7 @@ def create_blank_world(size_x=20, size_y=20, character="#"):
 def add_room(world, amount):
     for i in range(amount):
         coords = [random.randint(0, len(world) - 1), random.randint(0, len(world) - 1)]
-        size = [random.randint(3, 6), random.randint(3, 6)]
+        size = [random.randint(3, 5), random.randint(3, 5)]
         room_center_coords.append([coords[0]+math.floor(size[0]/2), coords[1]+math.floor(size[1]/2)])
         for y in range(size[0]):
             for x in range(size[1]):
@@ -44,7 +44,7 @@ def coord_sorter():
         room_center_coords[i] = lastlist[i]
 
 
-def add_corridors(world, radius = 15):
+def add_corridors(world, radius = 18):
     coord_sorter()
     for i in range(len(room_center_coords)):
         for j in range(len(room_center_coords)):
@@ -110,7 +110,7 @@ def show_world(world):
 
 def generate_world():
     world = create_blank_world()
-    add_room(world,5)
+    add_room(world,7)
     add_corridors(world)
     filter_world(world)
     return world
