@@ -35,6 +35,6 @@ _ is floor
 . is empty space
 ```
 
-Press Shift to run to speed up your exploration.
+Press Shift to run to speed up your exploration and press F if you're stuck on the ground or fall through it.
 
-Feel free to contribute if you find the project interesting
+Feel free to contribute if you find the project interesting.
