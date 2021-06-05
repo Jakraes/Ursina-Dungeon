@@ -7,7 +7,7 @@ class FirstPersonController(Entity):
         self.speed = 5
         self.origin_y = -.5
         self.camera_pivot = Entity(parent=self, y=2)
-        self.cursor = Entity(parent=camera.ui, model='quad', color=color.pink, scale=.008, rotation_z=45)
+        self.cursor = Entity(parent=camera.ui, model='quad', texture="cursor.png", scale=0.035)
 
         camera.parent = self.camera_pivot
         camera.position = (0,0,0)

@@ -9,6 +9,7 @@ app = Ursina()
 
 world = generate_world()
 player = FirstPersonController()
+player.cursor.double_sided = True
 Sky(color=color.hex("#130310"))
 number = 3
 scene.fog_density = .1
@@ -17,6 +18,9 @@ wallwater = Entity()
 wall = Entity()
 floor = Entity()
 ceil = Entity()
+window.vsync = False
+window.borderless = False
+window.exit_button.disable()
 print(show_world(world))
 
 # ---------------------------------------------------------------#
@@ -25,24 +29,27 @@ torch = Entity()
 for y in range(len(world)):
     for x in range(len(world)):
         if world[y][x] == "_":
-            area = [world[y-1][x], world[y][x-1], world[y][x+1], world[y+1][x]]
+            area = [world[y - 1][x], world[y][x - 1], world[y][x + 1], world[y + 1][x]]
             amount = 0
             for i in area:
                 if i == "#":
                     amount += 1
             if amount == 1 or amount == 3:
-                torch_walls.append([y,x])
+                torch_walls.append([y, x])
 for i in torch_walls:
-    if random.randint(0,10) == 5:
-        Entity(model="plane", texture="torch.png", position=(i[1]*number, 0, i[0]*number), scale=number, rotation = (-90,0,0),
-               double_sided = True, parent = torch)
+    if random.randint(0, 10) == 5:
+        Entity(model="plane", texture="torch.png", position=(i[1] * number, 0, i[0] * number), scale=number,
+               rotation=(-90, 0, 0),
+               double_sided=True, parent=torch)
 # ---------------------------------------------------------------#
+yeet = []
 for y in range(len(world)):
     for x in range(len(world)):
         if world[y][x] == "#":
             if random.randint(0, 8) == 1:
-                Entity(model="cube", texture="wall2w.png", collider="box", position=(x * number, 0, y * number),
-                       scale=number, parent=wallwater)
+                yeet.append(
+                    Entity(model="cube", texture="wall2w.png", collider="box", position=(x * number, 0, y * number),
+                           scale=number, parent=wallwater))
             else:
                 Entity(model="cube", texture="wall2.png", collider="box", position=(x * number, 0, y * number),
                        scale=number, parent=wall)
@@ -89,10 +96,14 @@ def input(key):
     if key == "f":
         player.y = number
 
-print(torch.children)
 
 def update():
-    for i in torch.children:
-        i.rotation_y = player.rotation_y
+    for c in torch.children:
+        if distance(c, player) < number * 15:
+            c.enabled = True
+            c.rotation_y = player.rotation_y
+        else:
+            c.enabled = False
+
 
 app.run()
