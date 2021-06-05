@@ -1,10 +1,10 @@
 import random
 import math
-import copy
 
 room_center_coords = []
 
-def create_blank_world(size_x=25, size_y=25, character="#"):
+
+def create_blank_world(size_x=40, size_y=40, character="#"):
     world = []
     for line in range(size_y):
         world.append([])
@@ -16,22 +16,23 @@ def add_room(world, amount):
     for i in range(amount):
         coords = [random.randint(0, len(world) - 1), random.randint(0, len(world) - 1)]
         size = [random.randint(3, 5), random.randint(3, 5)]
-        room_center_coords.append([coords[0]+math.floor(size[0]/2), coords[1]+math.floor(size[1]/2)])
+        room_center_coords.append([coords[0] + math.floor(size[0] / 2), coords[1] + math.floor(size[1] / 2)])
         for y in range(size[0]):
             for x in range(size[1]):
                 try:
-                    world[coords[0]+y][coords[1]+x] = "_"
+                    world[coords[0] + y][coords[1] + x] = "_"
                 except IndexError:
                     pass
+
 
 def coord_sorter():
     indexlist = []
     for i in range(len(room_center_coords)):
         distance = math.sqrt(((room_center_coords[i][0]) ** 2) + (
-                    (room_center_coords[i][1]) ** 2))
+                (room_center_coords[i][1]) ** 2))
         indexlist.append(distance)
     indexlist.sort()
-    lastlist=[]
+    lastlist = []
     for x in range(len(indexlist)):
         lastlist.append(0)
     for i in range(len(room_center_coords)):
@@ -44,36 +45,37 @@ def coord_sorter():
         room_center_coords[i] = lastlist[i]
 
 
-def add_corridors(world, radius = 18):
+def add_corridors(world, radius=18):
     coord_sorter()
     for i in range(len(room_center_coords)):
         for j in range(len(room_center_coords)):
-            distance = math.sqrt(((room_center_coords[j][0]-room_center_coords[i][0])**2) + ((room_center_coords[j][1]-room_center_coords[i][1])**2))
+            distance = math.sqrt(((room_center_coords[j][0] - room_center_coords[i][0]) ** 2) + (
+                        (room_center_coords[j][1] - room_center_coords[i][1]) ** 2))
             if distance <= radius and j > i:
-                yDif = room_center_coords[j][0]-room_center_coords[i][0]
-                xDif = room_center_coords[j][1]-room_center_coords[i][1]
+                y_dif = room_center_coords[j][0] - room_center_coords[i][0]
+                x_dif = room_center_coords[j][1] - room_center_coords[i][1]
                 y = 0
                 x = 0
-                if random.randint(0,1) == 1:
-                    for x in range(xDif):
+                if random.randint(0, 1) == 1:
+                    for x in range(x_dif):
                         try:
-                            world[room_center_coords[i][0]][room_center_coords[i][1]+x] = "_"
+                            world[room_center_coords[i][0]][room_center_coords[i][1] + x] = "_"
                         except IndexError:
                             pass
-                    for y in range(yDif):
+                    for y in range(y_dif):
                         try:
-                            world[room_center_coords[i][0]+y][room_center_coords[i][1]+x] = "_"
+                            world[room_center_coords[i][0] + y][room_center_coords[i][1] + x] = "_"
                         except IndexError:
                             pass
                 else:
-                    for y in range(yDif):
+                    for y in range(y_dif):
                         try:
-                            world[room_center_coords[i][0]+y][room_center_coords[i][1]] = "_"
+                            world[room_center_coords[i][0] + y][room_center_coords[i][1]] = "_"
                         except IndexError:
                             pass
-                    for x in range(xDif):
+                    for x in range(x_dif):
                         try:
-                            world[room_center_coords[i][0]+y][room_center_coords[i][1]+x] = "_"
+                            world[room_center_coords[i][0] + y][room_center_coords[i][1] + x] = "_"
                         except IndexError:
                             pass
 
@@ -81,17 +83,17 @@ def add_corridors(world, radius = 18):
 def filter_world(world):
     for y in range(len(world)):
         for x in range(len(world)):
-            if y == 0 or y == len(world)-1 or x == 0 or x == len(world)-1:
+            if y == 0 or y == len(world) - 1 or x == 0 or x == len(world) - 1:
                 world[y][x] = "#"
-    big_world = create_blank_world(len(world)+2, len(world)+2, "#")
+    big_world = create_blank_world(len(world) + 2, len(world) + 2, "#")
     for y in range(len(world)):
         for x in range(len(world)):
-            big_world[y+1][x+1] = world[y][x]
+            big_world[y + 1][x + 1] = world[y][x]
     for y in range(len(world)):
         for x in range(len(world)):
-            area = [big_world[y][x], big_world[y][x+1], big_world[y][x+2],
-                    big_world[y+1][x], big_world[y+1][x+2],
-                    big_world[y+2][x], big_world[y+2][x+1], big_world[y+2][x+2]]
+            area = [big_world[y][x], big_world[y][x + 1], big_world[y][x + 2],
+                    big_world[y + 1][x], big_world[y + 1][x + 2],
+                    big_world[y + 2][x], big_world[y + 2][x + 1], big_world[y + 2][x + 2]]
             if "_" not in area:
                 world[y][x] = "."
 
@@ -110,7 +112,7 @@ def show_world(world):
 
 def generate_world():
     world = create_blank_world()
-    add_room(world,7)
+    add_room(world, 20)
     add_corridors(world)
     filter_world(world)
     return world
