@@ -34,7 +34,7 @@ for y in range(len(world)):
                 torch_walls.append([y,x])
 for i in torch_walls:
     if random.randint(0,10) == 5:
-        Entity(model="cube", texture="torch.png", position=(i[1]*number, 0, i[0]*number), scale=number, rotation = (0,0,0),
+        Entity(model="plane", texture="torch.png", position=(i[1]*number, 0, i[0]*number), scale=number, rotation = (-90,0,0),
                double_sided = True, parent = torch)
 # ---------------------------------------------------------------#
 for y in range(len(world)):
@@ -89,7 +89,10 @@ def input(key):
     if key == "f":
         player.y = number
 
+print(torch.children)
+
 def update():
-    torch.look_at((player.world_x, 0, player.world_z), axis="forward")
+    for i in torch.children:
+        i.rotation_y = player.rotation_y
 
 app.run()
