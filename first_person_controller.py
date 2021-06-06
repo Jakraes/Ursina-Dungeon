@@ -23,6 +23,8 @@ class FirstPersonController(Entity):
         self.jumping = False
         self.air_time = 0
 
+        self.walk = Audio("walk.mp3", autoplay = True, loop = True)
+        self.walk.pause()
 
         for key, value in kwargs.items():
             setattr(self, key ,value)
@@ -38,7 +40,12 @@ class FirstPersonController(Entity):
             self.forward * (held_keys['w'] - held_keys['s'])
             + self.right * (held_keys['d'] - held_keys['a'])
             ).normalized()
-
+        if self.walk.time == self.walk.length:
+            self.walk.time = 0
+        if (held_keys["w"] - held_keys["s"] != 0 or held_keys['d'] - held_keys['a'] != 0) and self.walk.playing == 0:
+            self.walk.resume()
+        elif (held_keys["w"] - held_keys["s"] == 0 and held_keys['d'] - held_keys['a'] == 0) and self.walk.playing ==1:
+            self.walk.pause()
         origin = self.world_position + (self.up*.5)
         hit_info = raycast(origin , self.direction, ignore=(self,), distance=.5, debug=False)
         if not hit_info.hit:
